@@ -34,16 +34,18 @@ namespace ET
 				
 				Log.Info($"server start........................ {Game.Scene.Id}");
 
-				Game.EventSystem.Publish(new EventType.AppStart());
+				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
 				
 				while (true)
 				{
 					try
 					{
+						GameUtils.Time.FrameTime = TimeHelper.Now() - GameUtils.Time.FrameEndTime;
 						Thread.Sleep(1);
 						Game.Update();
 						Game.LateUpdate();
 						Game.FrameFinish();
+						GameUtils.Time.FrameEndTime = TimeHelper.Now();
 					}
 					catch (Exception e)
 					{

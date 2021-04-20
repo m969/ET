@@ -42,5 +42,15 @@ namespace ET
         {
             return Game.TimeInfo.ServerFrameTime();
         }
+
+        public static async ETTask WaitAsync(long time)
+        {
+            await TimerComponent.Instance.WaitAsync(time);
+        }
+
+        public static long Now()
+        {
+            return Game.TimeInfo.ClientNow();
+        }
     }
 }
