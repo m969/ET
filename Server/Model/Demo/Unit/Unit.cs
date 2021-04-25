@@ -7,6 +7,8 @@ namespace ET
     [BsonIgnoreExtraElements]
     public sealed class Unit: Entity
     {
+        public EGamePlay.Combat.CombatEntity CombatEntity { get; set; }
+
         public int ConfigId; //配置表id
 
         [BsonIgnore]

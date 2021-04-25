@@ -33,6 +33,7 @@ namespace ET
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
                     scene.AddComponent<RecastPathComponent>();
+                    scene.AddComponent<EGamePlayComponent>();
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();

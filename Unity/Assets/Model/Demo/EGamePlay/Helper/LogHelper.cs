@@ -25,7 +25,7 @@ namespace EGamePlay
     {
         public static void Debug(string log)
         {
-            ET.Log.Debug(log);
+            ET.Log.Info(log);
         }
 
         public static void Error(string log)
