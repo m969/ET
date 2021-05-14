@@ -337,12 +337,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs">
       <Link>Module\CoroutineLock\CoroutineLockComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueue.cs">
-      <Link>Module\CoroutineLock\CoroutineLockQueue.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs">
-      <Link>Module\CoroutineLock\CoroutineLockQueueType.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockType.cs">
       <Link>Module\CoroutineLock\CoroutineLockType.cs</Link>
     </Compile>
@@ -360,7 +354,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\OpcodeHelper.cs" Link="Module\Message\OpcodeHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\OpcodeTypeComponent.cs" Link="Module\Message\OpcodeTypeComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Message\ProtobufHelper.cs" Link="Module\Message\ProtobufHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\Session.cs" Link="Module\Message\Session.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\PacketParser.cs">
