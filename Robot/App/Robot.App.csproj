@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>ET</RootNamespace>
+        <AssemblyName>Robot</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>../../Bin/</OutputPath>
+      <DefineConstants>TRACECOREAPP;NOT_UNITY</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>../../Bin/</OutputPath>
+      <DefineConstants>TRACECOREAPP;NOT_UNITY</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Model\Robot.Model.csproj" />
+    </ItemGroup>
+
+</Project>

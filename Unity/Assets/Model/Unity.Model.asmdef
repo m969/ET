@@ -1,6 +1,6 @@
 {
     "name": "Unity.Model",
-    "rootNamespace": "",
+    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Timeline",
