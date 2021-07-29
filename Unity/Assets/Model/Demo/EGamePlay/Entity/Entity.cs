@@ -141,9 +141,9 @@ namespace EGamePlay
         {
 #if !SERVER
             GameObject = new UnityEngine.GameObject(GetType().Name);
-            var view = GameObject.AddComponent<ET.ComponentView>();
+            //var view = GameObject.AddComponent<ET.ComponentView>();
             //view.Type = GameObject.name;
-            view.Component = this;
+            //view.Component = this;
 #endif
         }
 
@@ -218,9 +218,9 @@ namespace EGamePlay
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             component.Setup();
 #if !SERVER
-            var view = GameObject.AddComponent<ET.ComponentView>();
+            //var view = GameObject.AddComponent<ET.ComponentView>();
             //view.Type = typeof(T).Name;
-            view.Component = component;
+            //view.Component = component;
 #endif
             return component;
         }
@@ -236,9 +236,9 @@ namespace EGamePlay
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
             component.Setup(initData);
 #if !SERVER
-            var view = GameObject.AddComponent<ET.ComponentView>();
+            //var view = GameObject.AddComponent<ET.ComponentView>();
             //view.Type = typeof(T).Name;
-            view.Component = component;
+            //view.Component = component;
 #endif
             return component;
         }

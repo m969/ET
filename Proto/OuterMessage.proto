@@ -186,6 +186,7 @@ message G2C_TestHotfixMessage // IMessage
 {
 	string Info = 1;
 }
+
 message C2M_ShootRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
