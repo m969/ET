@@ -34,6 +34,7 @@ namespace ET
                     scene.AddComponent<UnitComponent>();
                     scene.AddComponent<RecastPathComponent>();
                     scene.AddComponent<EGamePlayComponent>();
+                    scene.AddComponent<LogicPhysicsComponent>();
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();

@@ -340,8 +340,83 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockType.cs">
       <Link>Module\CoroutineLock\CoroutineLockType.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\AcosLookupTable.cs">
+      <Link>Module\FixedPoint\AcosLookupTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\Atan2LookupTable.cs">
+      <Link>Module\FixedPoint\Atan2LookupTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\IntMath.cs">
+      <Link>Module\FixedPoint\IntMath.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\SinCosLookupTable.cs">
+      <Link>Module\FixedPoint\SinCosLookupTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VFactor.cs">
+      <Link>Module\FixedPoint\VFactor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VInt.cs">
+      <Link>Module\FixedPoint\VInt.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VInt2.cs">
+      <Link>Module\FixedPoint\VInt2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VInt3.cs">
+      <Link>Module\FixedPoint\VInt3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VLine.cs">
+      <Link>Module\FixedPoint\VLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VRect.cs">
+      <Link>Module\FixedPoint\VRect.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageDispatcherComponent.cs">
       <Link>Module\Message\MessageDispatcherComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\ActorRoot.cs">
+      <Link>Module\Physics\Actor\ActorRoot.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\ActorRootSlot.cs">
+      <Link>Module\Physics\Actor\ActorRootSlot.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\ActorTypeDef.cs">
+      <Link>Module\Physics\Actor\ActorTypeDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\COM_PLAYERCAMP.cs">
+      <Link>Module\Physics\Actor\COM_PLAYERCAMP.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\IUpdateLogic.cs">
+      <Link>Module\Physics\Actor\IUpdateLogic.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\CollisionShapeType.cs">
+      <Link>Module\Physics\CollisionShapeType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\DictionaryView.cs">
+      <Link>Module\Physics\DictionaryView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\IObjPoolCtrl.cs">
+      <Link>Module\Physics\Pool\IObjPoolCtrl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\IPooledMonoBehaviour.cs">
+      <Link>Module\Physics\Pool\IPooledMonoBehaviour.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\PooledClassObject.cs">
+      <Link>Module\Physics\Pool\PooledClassObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\PoolObjHandle.cs">
+      <Link>Module\Physics\Pool\PoolObjHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionBox.cs">
+      <Link>Module\Physics\VCollisionBox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionCylinderSector.cs">
+      <Link>Module\Physics\VCollisionCylinderSector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionShape.cs">
+      <Link>Module\Physics\VCollisionShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionSphere.cs">
+      <Link>Module\Physics\VCollisionSphere.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

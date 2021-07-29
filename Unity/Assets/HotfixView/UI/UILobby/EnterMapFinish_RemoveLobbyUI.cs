@@ -9,7 +9,7 @@
 			// 切换到map场景
 			using (SceneChangeComponent sceneChangeComponent = Game.Scene.AddComponent<SceneChangeComponent>())
 			{
-				await sceneChangeComponent.ChangeSceneAsync("Map");
+				await sceneChangeComponent.ChangeSceneAsync("GameMap");
 			}
             args.ZoneScene.AddComponent<OperaComponent>();
             await UIHelper.Remove(args.ZoneScene, UIType.UILobby);

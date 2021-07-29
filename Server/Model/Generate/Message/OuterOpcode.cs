@@ -29,5 +29,7 @@ namespace ET
 		 public const ushort PlayerInfo = 20025;
 		 public const ushort C2G_PlayerInfo = 20026;
 		 public const ushort G2C_PlayerInfo = 20027;
+		 public const ushort C2M_ShootActorRequest = 20028;
+		 public const ushort M2C_ShootActorResponse = 20029;
 	}
 }

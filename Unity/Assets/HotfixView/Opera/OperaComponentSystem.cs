@@ -36,6 +36,10 @@ namespace ET
                     self.DomainScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
                 }
             }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                SessionHelper.Call<M2C_ShootActorResponse>(new C2M_ShootActorRequest()).Coroutine();
+            }
         }
     }
 }

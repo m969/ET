@@ -769,9 +769,24 @@ namespace UnityEngine
 {
     public class GameObject
     {
+        public bool activeSelf { get; set; }
+    }
+    
+    public class Transform
+    {
+
+    }
+    
+    public class Animation
+    {
 
     }
 
+
+    public sealed class SerializeField : Attribute
+    {
+    }
+    
     /// <summary>
     ///   <para>Mark a ScriptableObject-derived type to be automatically listed in the Assets/Create submenu, so that instances of the type can be easily created and stored in the project as ".asset" files.</para>
     /// </summary>

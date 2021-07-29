@@ -8,6 +8,7 @@ namespace ET
     public sealed class Unit: Entity
     {
         public int ConfigId; //配置表id
+        public EGamePlay.Combat.CombatEntity CombatEntity { get; set; }
 
         [BsonIgnore]
         public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
@@ -41,5 +42,8 @@ namespace ET
                 Game.EventSystem.Publish(new EventType.ChangeRotation() {Unit = this}).Coroutine();
             }
         }
+
+        [BsonIgnore]
+        public bool Moving { get; set; }
     }
 }

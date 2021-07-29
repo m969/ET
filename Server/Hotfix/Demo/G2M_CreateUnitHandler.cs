@@ -11,8 +11,16 @@ namespace ET
 			Unit unit = EntityFactory.CreateWithId<Unit, int>(scene, IdGenerater.Instance.GenerateId(), 1001);
 			unit.AddComponent<MoveComponent>();
 			unit.Position = new Vector3(-10, 0, -10);
+			unit.AddComponent<CombatComponent>();
 			unit.CombatEntity = EGamePlay.Entity.Create<EGamePlay.Combat.CombatEntity>();
-			
+			unit.CollisionSphere = new VCollisionSphere
+			{
+				Pos = (VInt3)unit.Position,
+				Radius = 1
+			};
+			unit.CombatEntity.AddComponent<CollisionComponent>().CollisionShape = unit.CollisionSphere;
+			unit.Domain.GetComponent<LogicPhysicsComponent>().AddCollisionShape(unit.CollisionSphere, unit);
+
 			NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
 			numericComponent.Set(NumericType.Speed, 6f); // 速度是6米每秒
 			
