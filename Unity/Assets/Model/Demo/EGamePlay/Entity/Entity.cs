@@ -112,7 +112,7 @@ namespace EGamePlay
 
     public abstract partial class Entity : IDisposable
     {
-#if !SERVER
+#if !NOT_UNITY
         public UnityEngine.GameObject GameObject { get; set; }
 #endif
         public long Id { get; set; }
@@ -122,7 +122,7 @@ namespace EGamePlay
             get => name;
             set
             {
-#if !SERVER
+#if !NOT_UNITY
                 GameObject.name = $"{GetType().Name}: {value}";
 #endif
                 name = value;
@@ -139,7 +139,7 @@ namespace EGamePlay
 
         public Entity()
         {
-#if !SERVER
+#if !NOT_UNITY
             GameObject = new UnityEngine.GameObject(GetType().Name);
             //var view = GameObject.AddComponent<ET.ComponentView>();
             //view.Type = GameObject.name;
@@ -192,7 +192,7 @@ namespace EGamePlay
             {
                 Master.Entities[GetType()].Remove(this);
             }
-#if !SERVER
+#if !NOT_UNITY
             UnityEngine.GameObject.Destroy(GameObject);
 #endif
         }
@@ -274,7 +274,7 @@ namespace EGamePlay
             }
             Type2Children[child.GetType()].Add(child);
             child.Parent = this;
-#if !SERVER
+#if !NOT_UNITY
             child.GameObject.transform.SetParent(GameObject.transform);
 #endif
         }
@@ -287,7 +287,7 @@ namespace EGamePlay
                 Type2Children[child.GetType()].Remove(child);
             }
             child.Parent = null;
-#if !SERVER
+#if !NOT_UNITY
             child.GameObject.transform.SetParent(null);
 #endif
         }

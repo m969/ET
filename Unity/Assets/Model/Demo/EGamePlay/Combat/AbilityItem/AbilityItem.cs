@@ -9,14 +9,14 @@ namespace EGamePlay.Combat.Ability
     /// <summary>
     /// 能力单元体
     /// </summary>
-    public class AbilityItem : AbilityEntity
+    public class AbilityItem : Entity
     {
-        public object unitInitData { get; set; }
+        public AbilityEntity AbilityEntity { get; set; }
 
 
         public override void Awake(object initData)
         {
-            unitInitData = initData;
+            AbilityEntity = initData as AbilityEntity;
         }
     }
 }

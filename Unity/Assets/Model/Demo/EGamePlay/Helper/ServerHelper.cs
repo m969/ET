@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-#if SERVER
+#if NOT_UNITY
 namespace Sirenix.OdinInspector
 {
     [Conditional("UNITY_EDITOR")]

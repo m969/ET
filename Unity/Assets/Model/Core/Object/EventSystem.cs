@@ -14,7 +14,8 @@ namespace ET
 		{
 			get
 			{
-				return instance ??= new EventSystem();
+				if (instance == null) instance = new EventSystem();
+				return instance;
 			}
 		}
 		
@@ -618,7 +619,7 @@ namespace ET
 			{
 				return;
 			}
-			using var list = ListComponent<ETTask>.Create();
+			var list = ListComponent<ETTask>.Create();
 
 			foreach (object obj in iEvents)
 			{
@@ -632,10 +633,12 @@ namespace ET
 			try
 			{
 				await ETTaskHelper.WaitAll(list.List);
+				list.Dispose();
 			}
 			catch (Exception e)
 			{
 				Log.Error(e);
+				list.Dispose();
 			}
 		}
 

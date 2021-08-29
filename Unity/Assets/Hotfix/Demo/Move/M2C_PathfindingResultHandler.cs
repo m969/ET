@@ -11,7 +11,7 @@ namespace ET
 
 			float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
 
-			using var list = ListComponent<Vector3>.Create();
+			var list = ListComponent<Vector3>.Create();
 			
 			for (int i = 0; i < message.Xs.Count; ++i)
 			{
@@ -19,6 +19,7 @@ namespace ET
 			}
 
 			await unit.GetComponent<MoveComponent>().MoveToAsync(list.List, speed);
+			list.Dispose();
 		}
 	}
 }

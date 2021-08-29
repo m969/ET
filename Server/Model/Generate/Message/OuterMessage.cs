@@ -389,6 +389,7 @@ namespace ET
 
 	}
 
+	[ResponseType(typeof(M2C_ShootResponse))]
 	[Message(OuterOpcode.C2M_ShootRequest)]
 	[ProtoContract]
 	public partial class C2M_ShootRequest: Object, IActorLocationRequest

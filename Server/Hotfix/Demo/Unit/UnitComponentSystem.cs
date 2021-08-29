@@ -6,6 +6,7 @@ namespace ET
     {
         public override void Awake(UnitComponent self)
         {
+
         }
     }
     

@@ -38,7 +38,7 @@ namespace ET
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                //SessionHelper.Call<M2C_ShootActorResponse>(new C2M_ShootActorRequest()).Coroutine();
+                SessionHelper.Call<M2C_ShootResponse>(new C2M_ShootRequest()).Coroutine();
             }
         }
     }

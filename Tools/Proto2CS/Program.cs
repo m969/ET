@@ -101,7 +101,7 @@ namespace ET
                     }
 
                     msgOpcode.Add(new OpcodeInfo() { Name = msgName, Opcode = ++startOpcode });
-
+                    
                     sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
                     sb.Append($"\tpublic partial class {msgName}: Object");

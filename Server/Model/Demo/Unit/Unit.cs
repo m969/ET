@@ -4,12 +4,19 @@ using UnityEngine;
 
 namespace ET
 {
-    [BsonIgnoreExtraElements]
-    public sealed class Unit: Entity
+    public enum UnitType : byte
     {
+        Unit,
+        Npc,
+        Monster,
+        AbilityItem
+    }
+
+    [BsonIgnoreExtraElements]
+    public sealed class Unit : Entity
+    {
+        public UnitType UnitType;
         public int ConfigId; //配置表id
-        public EGamePlay.Combat.CombatEntity CombatEntity { get; set; }
-        public VCollisionSphere CollisionSphere { get; set; }
 
         [BsonIgnore]
         public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
@@ -22,8 +29,6 @@ namespace ET
             set
             {
                 this.position = value;
-                CombatEntity.Position = this.position;
-                CollisionSphere.UpdateShape((VInt3)this.position, (VInt3)Forward);
                 Game.EventSystem.Publish(new EventType.ChangePosition() { Unit = this }).Coroutine();
             }
         }
