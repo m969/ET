@@ -1,3 +1,10 @@
+- master分支是ET主分支，用来同步ET框架最新版本
+- Branch_EGP分支才是EGamePlay MMO Demo的分支
+- 代码clone下来后需要切到Branch_EGP分支再运行
+- 进游戏后按Q健可以射出箭矢
+
+---
+
 # [English](https://github.com/egametang/Egametang/blob/master/README-EN.md) 
 
 # __讨论QQ群 : 474643097__  
