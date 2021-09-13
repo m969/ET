@@ -7,7 +7,14 @@ namespace ET
         protected override async ETTask Run(EventType.ChangeRotation args)
         {
             Transform transform = args.Unit.GetComponent<GameObjectComponent>().GameObject.transform;
-            transform.GetChild(0).rotation = args.Unit.Rotation;
+            if (args.Unit.IsMyUnit)
+            {
+                transform.GetChild(0).rotation = args.Unit.Rotation;
+            }
+            else
+            {
+                transform.rotation = args.Unit.Rotation;
+            }
             await ETTask.CompletedTask;
         }
     }

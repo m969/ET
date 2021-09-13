@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+#if !SERVER
 public class SCollisionComponent : MonoBehaviour
 {
 	public CollisionShapeType shapeType = CollisionShapeType.Sphere;
@@ -48,3 +49,4 @@ public class SCollisionComponent : MonoBehaviour
 		return result;
 	}
 }
+#endif

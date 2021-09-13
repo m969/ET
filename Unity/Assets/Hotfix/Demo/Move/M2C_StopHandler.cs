@@ -22,6 +22,7 @@ namespace ET
 			unit.Position = pos;
 			unit.Rotation = rotation;
 			unit.GetComponent<ObjectWait>()?.Notify(new WaitType.Wait_UnitStop() {Error = message.Error});
+            Game.EventSystem.Publish(new EventType.MoveStop(){Unit = unit }).Coroutine();
 			await ETTask.CompletedTask;
 		}
 	}

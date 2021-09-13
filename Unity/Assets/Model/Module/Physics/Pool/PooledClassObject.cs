@@ -4,7 +4,7 @@ namespace Assets.Scripts.Common
 {
 	public class PooledClassObject
 	{
-		public uint usingSeq;
+		public uint usingSeq = 1;
 
 		public IObjPoolCtrl holder;
 

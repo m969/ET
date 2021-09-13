@@ -3,8 +3,8 @@
     "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
-        "Unity.Timeline",
-        "Sirenix.OdinInspector.CompatibilityLayer"
+        "Unity.Mono",
+        "Unity.Timeline"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

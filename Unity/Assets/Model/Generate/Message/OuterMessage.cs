@@ -113,6 +113,9 @@ namespace ET
 		[ProtoMember(2)]
 		public int ConfigId { get; set; }
 
+		[ProtoMember(11)]
+		public int UnitType { get; set; }
+
 		[ProtoMember(3)]
 		public float X { get; set; }
 
@@ -127,6 +130,15 @@ namespace ET
 
 		[ProtoMember(7)]
 		public List<long> Vs = new List<long>();
+
+		[ProtoMember(8)]
+		public List<int> IntFields = new List<int>();
+
+		[ProtoMember(9)]
+		public List<long> LongFields = new List<long>();
+
+		[ProtoMember(10)]
+		public List<string> StringFields = new List<string>();
 
 	}
 
@@ -389,6 +401,40 @@ namespace ET
 
 	}
 
+	[ResponseType(typeof(M2C_TestRobotCase))]
+	[Message(OuterOpcode.C2M_TestRobotCase)]
+	[ProtoContract]
+	public partial class C2M_TestRobotCase: Object, IActorLocationRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(1)]
+		public int N { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_TestRobotCase)]
+	[ProtoContract]
+	public partial class M2C_TestRobotCase: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int N { get; set; }
+
+	}
+
 	[ResponseType(typeof(M2C_ShootResponse))]
 	[Message(OuterOpcode.C2M_ShootRequest)]
 	[ProtoContract]
@@ -417,6 +463,106 @@ namespace ET
 
 		[ProtoMember(92)]
 		public string Message { get; set; }
+
+	}
+
+	[ResponseType(typeof(M2C_SpellResponse))]
+	[Message(OuterOpcode.C2M_SpellRequest)]
+	[ProtoContract]
+	public partial class C2M_SpellRequest: Object, IActorLocationRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(10)]
+		public int SkillId { get; set; }
+
+		[ProtoMember(1)]
+		public float Direction { get; set; }
+
+		[ProtoMember(2)]
+		public float PointX { get; set; }
+
+		[ProtoMember(3)]
+		public float PointY { get; set; }
+
+		[ProtoMember(4)]
+		public float PointZ { get; set; }
+
+		[ProtoMember(5)]
+		public long TargetId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_SpellResponse)]
+	[ProtoContract]
+	public partial class M2C_SpellResponse: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_CreateAbilityItems)]
+	[ProtoContract]
+	public partial class M2C_CreateAbilityItems: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(2)]
+		public List<UnitInfo> AbilityItems = new List<UnitInfo>();
+
+	}
+
+	[Message(OuterOpcode.M2C_DestroyUnits)]
+	[ProtoContract]
+	public partial class M2C_DestroyUnits: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(2)]
+		public List<UnitInfo> Units = new List<UnitInfo>();
+
+	}
+
+	[Message(OuterOpcode.M2C_MoveUnit)]
+	[ProtoContract]
+	public partial class M2C_MoveUnit: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(4)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(1)]
+		public float X { get; set; }
+
+		[ProtoMember(2)]
+		public float Y { get; set; }
+
+		[ProtoMember(3)]
+		public float Z { get; set; }
 
 	}
 

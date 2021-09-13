@@ -31,9 +31,11 @@ namespace ET
                     break;
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
+                    scene.AddComponent<MonsterComponent>();
                     scene.AddComponent<RecastPathComponent>();
                     scene.AddComponent<EGamePlayComponent>();
                     scene.AddComponent<LogicPhysicsComponent>();
+                    UnitHelper.CreateMonster(scene);
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();

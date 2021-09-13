@@ -20,11 +20,12 @@ namespace ET
                 Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLogin.Address));
                 gateSession.AddComponent<PingComponent>();
                 zoneScene.AddComponent<SessionComponent>().Session = gateSession;
+                SessionComponent.Instance = zoneScene.GetComponent<SessionComponent>();
 				
                 G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(
                     new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId});
 
-                Log.Info("登陆gate成功!");
+                Log.Debug("登陆gate成功!");
 
                 await Game.EventSystem.Publish(new EventType.LoginFinish() {ZoneScene = zoneScene});
             }

@@ -52,9 +52,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\Server.Model.csproj" />
+    <Compile Remove="Helper\**" />
+    <EmbeddedResource Remove="Helper\**" />
+    <None Remove="Helper\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helper" />
+    <ProjectReference Include="..\Model\Server.Model.csproj" />
   </ItemGroup>
 </Project>

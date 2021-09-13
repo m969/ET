@@ -21,12 +21,15 @@
 
 	public class EGamePlayComponent : Entity
 	{
+		//public DoubleMap<Unit, CombatEntity> Unit2CombatEntities { get; set; } = new DoubleMap<Unit, CombatEntity>();
+
+
 		public void Awake()
         {
 			EGamePlay.Entity.EnableLog = true;
 			MasterEntity.Create();
-			EGamePlay.Entity.Create<CombatContext>();
-		}
+            EGamePlay.Entity.Create<CombatContext>();
+        }
 
 		public void Update()
 		{

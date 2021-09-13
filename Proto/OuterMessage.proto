@@ -53,11 +53,15 @@ message UnitInfo
 {
 	int64 UnitId  = 1;
     int32 ConfigId = 2;
+    int32 UnitType = 11;
 	float X = 3;
 	float Y = 4;
 	float Z = 5;
 	repeated int32 Ks = 6;
 	repeated int64 Vs = 7;
+	repeated int32 IntFields = 8;
+	repeated int64 LongFields = 9;
+	repeated string StringFields = 10;
 }
 
 message M2C_CreateUnits // IActorMessage
@@ -187,6 +191,22 @@ message G2C_TestHotfixMessage // IMessage
 	string Info = 1;
 }
 
+//ResponseType M2C_TestRobotCase
+message C2M_TestRobotCase // IActorLocationRequest
+{
+	int32 RpcId = 90;
+	int64 ActorId = 93;
+	int32 N = 1;
+}
+
+message M2C_TestRobotCase // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	int32 N = 1;
+}
+
 //ResponseType M2C_ShootResponse
 message C2M_ShootRequest // IActorLocationRequest
 {
@@ -200,4 +220,48 @@ message M2C_ShootResponse // IActorLocationResponse
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
+}
+
+//ResponseType M2C_SpellResponse
+message C2M_SpellRequest // IActorLocationRequest
+{
+	int32 RpcId = 90;
+	int64 ActorId = 91;
+	int32 SkillId = 10;
+	float Direction = 1;
+	float PointX = 2;
+	float PointY = 3;
+	float PointZ = 4;
+	int64 TargetId = 5;
+}
+
+message M2C_SpellResponse // IActorLocationResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
+message M2C_CreateAbilityItems // IActorMessage
+{
+	int32 RpcId = 90;
+	int64 ActorId = 93;
+    repeated UnitInfo AbilityItems = 2;
+}
+
+message M2C_DestroyUnits // IActorMessage
+{
+	int32 RpcId = 90;
+	int64 ActorId = 93;
+    repeated UnitInfo Units = 2;
+}
+
+message M2C_MoveUnit // IActorMessage
+{
+	int32 RpcId = 90;
+	int64 ActorId = 93;
+	int64 UnitId = 4;
+    float X = 1;
+    float Y = 2;
+    float Z = 3;
 }

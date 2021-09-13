@@ -55,13 +55,19 @@
         public struct EnterMapFinish
         {
             public Scene ZoneScene;
+            public Unit MyUnit;
         }
 
         public struct AfterUnitCreate
         {
             public Unit Unit;
         }
-        
+
+        public struct AfterAbilityItemCreate
+        {
+            public Unit Unit;
+        }
+
         public struct MoveStart
         {
             public Unit Unit;

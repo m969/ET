@@ -15,12 +15,12 @@ namespace ET
 			{
 				Log.Error(e.ExceptionObject.ToString());
 			};
-
+			
 			// 异步方法全部会回掉到主线程
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
 			try
-			{		
+			{
 				Game.EventSystem.Add(typeof(Game).Assembly);
 				Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
 				
@@ -32,14 +32,15 @@ namespace ET
 				Parser.Default.ParseArguments<Options>(args)
 						.WithNotParsed(error => throw new Exception($"命令行格式错误!"))
 						.WithParsed(o => { options = o; });
-
+				
 				Game.Options = options;
-
+				Game.Options.Console = 1;
+				
 				Game.ILog = new NLogger(Game.Options.AppType.ToString());
 				LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
 				
 				Log.Info($"server start........................ {Game.Scene.Id}");
-
+			
 				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
 				
 				while (true)

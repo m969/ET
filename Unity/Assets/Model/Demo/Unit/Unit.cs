@@ -4,11 +4,19 @@ using UnityEngine;
 
 namespace ET
 {
+    public enum UnitType : byte
+    {
+        Unit,
+        Npc,
+        Monster,
+        AbilityItem
+    }
+
     [BsonIgnoreExtraElements]
     public sealed class Unit: Entity
     {
+        public UnitType UnitType;
         public int ConfigId; //配置表id
-        public EGamePlay.Combat.CombatEntity CombatEntity { get; set; }
 
         [BsonIgnore]
         public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
@@ -45,5 +53,7 @@ namespace ET
 
         [BsonIgnore]
         public bool Moving { get; set; }
+        [BsonIgnore]
+        public bool IsMyUnit => this.Domain.GetComponent<UnitComponent>().MyUnit == this;
     }
 }

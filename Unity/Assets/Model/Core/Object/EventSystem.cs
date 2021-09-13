@@ -6,8 +6,52 @@ using System.Text;
 
 namespace ET
 {
+	using OneTypeSystems = UnOrderMultiMap<Type, object>;
+
 	public sealed class EventSystem: IDisposable
 	{
+		private class TypeSystems
+		{
+			private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new Dictionary<Type, OneTypeSystems>();
+		
+			public OneTypeSystems GetOrCreateOneTypeSystems(Type type)
+			{
+				OneTypeSystems systems = null;
+				this.typeSystemsMap.TryGetValue(type, out systems);
+				if (systems != null)
+				{
+					return systems;
+				}
+
+				systems = new OneTypeSystems();
+				this.typeSystemsMap.Add(type, systems);
+				return systems;
+			}
+		
+			public OneTypeSystems GetOneTypeSystems(Type type)
+			{
+				OneTypeSystems systems = null;
+				this.typeSystemsMap.TryGetValue(type, out systems);
+				return systems;
+			}
+		
+			public List<object> GetSystems(Type type, Type systemType)
+			{
+				OneTypeSystems oneTypeSystems = null;
+				if (!this.typeSystemsMap.TryGetValue(type, out oneTypeSystems))
+				{
+					return null;
+				}
+
+				if (!oneTypeSystems.TryGetValue(systemType, out List<object> systems))
+				{
+					return null;
+				}
+				return systems;
+			}
+		}
+		
+		
 		private static EventSystem instance;
 
 		public static EventSystem Instance
@@ -26,27 +70,11 @@ namespace ET
 		private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
 
 		private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>();
-
-		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeSystems = new UnOrderMultiMap<Type, IAwakeSystem>();
-
-		private readonly UnOrderMultiMap<Type, IStartSystem> startSystems = new UnOrderMultiMap<Type, IStartSystem>();
-
-		private readonly UnOrderMultiMap<Type, IDestroySystem> destroySystems = new UnOrderMultiMap<Type, IDestroySystem>();
-
-		private readonly UnOrderMultiMap<Type, ILoadSystem> loadSystems = new UnOrderMultiMap<Type, ILoadSystem>();
-
-		private readonly UnOrderMultiMap<Type, IUpdateSystem> updateSystems = new UnOrderMultiMap<Type, IUpdateSystem>();
-
-		private readonly UnOrderMultiMap<Type, ILateUpdateSystem> lateUpdateSystems = new UnOrderMultiMap<Type, ILateUpdateSystem>();
-
-		private readonly UnOrderMultiMap<Type, IChangeSystem> changeSystems = new UnOrderMultiMap<Type, IChangeSystem>();
 		
-		private readonly UnOrderMultiMap<Type, IDeserializeSystem> deserializeSystems = new UnOrderMultiMap<Type, IDeserializeSystem>();
+		private TypeSystems typeSystems = new TypeSystems();
 		
 		private Queue<long> updates = new Queue<long>();
 		private Queue<long> updates2 = new Queue<long>();
-		
-		private readonly Queue<long> starts = new Queue<long>();
 
 		private Queue<long> loaders = new Queue<long>();
 		private Queue<long> loaders2 = new Queue<long>();
@@ -85,44 +113,16 @@ namespace ET
 				}
 			}
 
-			this.awakeSystems.Clear();
-			this.lateUpdateSystems.Clear();
-			this.updateSystems.Clear();
-			this.startSystems.Clear();
-			this.loadSystems.Clear();
-			this.changeSystems.Clear();
-			this.destroySystems.Clear();
-			this.deserializeSystems.Clear();
+			this.typeSystems = new TypeSystems();
 			
 			foreach (Type type in this.GetTypes(typeof(ObjectSystemAttribute)))
 			{
 				object obj = Activator.CreateInstance(type);
-				switch (obj)
+
+				if (obj is ISystemType iSystemType)
 				{
-					case IAwakeSystem objectSystem:
-						this.awakeSystems.Add(objectSystem.Type(), objectSystem);
-						break;
-					case IUpdateSystem updateSystem:
-						this.updateSystems.Add(updateSystem.Type(), updateSystem);
-						break;
-					case ILateUpdateSystem lateUpdateSystem:
-						this.lateUpdateSystems.Add(lateUpdateSystem.Type(), lateUpdateSystem);
-						break;
-					case IStartSystem startSystem:
-						this.startSystems.Add(startSystem.Type(), startSystem);
-						break;
-					case IDestroySystem destroySystem:
-						this.destroySystems.Add(destroySystem.Type(), destroySystem);
-						break;
-					case ILoadSystem loadSystem:
-						this.loadSystems.Add(loadSystem.Type(), loadSystem);
-						break;
-					case IChangeSystem changeSystem:
-						this.changeSystems.Add(changeSystem.Type(), changeSystem);
-						break;
-					case IDeserializeSystem deserializeSystem:
-						this.deserializeSystems.Add(deserializeSystem.Type(), deserializeSystem);
-						break;
+					OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
+					oneTypeSystems.Add(iSystemType.SystemType(), obj);
 				}
 			}
 
@@ -145,6 +145,8 @@ namespace ET
 			
 			this.Load();
 		}
+
+
 		
 		public Assembly GetAssembly(string name)
 		{
@@ -186,22 +188,23 @@ namespace ET
 			
 			Type type = component.GetType();
 
-			if (this.loadSystems.ContainsKey(type))
+			OneTypeSystems oneTypeSystems = this.typeSystems.GetOneTypeSystems(type);
+			if (oneTypeSystems == null)
+			{
+				return;
+			}
+
+			if (oneTypeSystems.ContainsKey(typeof(ILoadSystem)))
 			{ 
 				this.loaders.Enqueue(component.InstanceId);
 			}
 
-			if (this.updateSystems.ContainsKey(type))
+			if (oneTypeSystems.ContainsKey(typeof(IUpdateSystem)))
 			{
 				this.updates.Enqueue(component.InstanceId);
 			}
 
-			if (this.startSystems.ContainsKey(type))
-			{
-				this.starts.Enqueue(component.InstanceId);
-			}
-
-			if (this.lateUpdateSystems.ContainsKey(type))
+			if (oneTypeSystems.ContainsKey(typeof(ILateUpdateSystem)))
 			{
 				this.lateUpdates.Enqueue(component.InstanceId);
 			}
@@ -226,7 +229,7 @@ namespace ET
 		
 		public void Deserialize(Entity component)
 		{
-			List<IDeserializeSystem> iDeserializeSystems = this.deserializeSystems[component.GetType()];
+			List<object> iDeserializeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDeserializeSystem));
 			if (iDeserializeSystems == null)
 			{
 				return;
@@ -252,7 +255,7 @@ namespace ET
 
 		public void Awake(Entity component)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
+			List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));
 			if (iAwakeSystems == null)
 			{
 				return;
@@ -264,16 +267,10 @@ namespace ET
 				{
 					continue;
 				}
-				
-				IAwake iAwake = aAwakeSystem as IAwake;
-				if (iAwake == null)
-				{
-					continue;
-				}
 
 				try
 				{
-					iAwake.Run(component);
+					aAwakeSystem.Run(component);
 				}
 				catch (Exception e)
 				{
@@ -284,28 +281,22 @@ namespace ET
 
 		public void Awake<P1>(Entity component, P1 p1)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
+			List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1>));
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem<P1> aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
-				{
-					continue;
-				}
-				
-				IAwake<P1> iAwake = aAwakeSystem as IAwake<P1>;
-				if (iAwake == null)
 				{
 					continue;
 				}
 
 				try
 				{
-					iAwake.Run(component, p1);
+					aAwakeSystem.Run(component, p1);
 				}
 				catch (Exception e)
 				{
@@ -316,28 +307,22 @@ namespace ET
 
 		public void Awake<P1, P2>(Entity component, P1 p1, P2 p2)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
+			List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2>));
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem<P1, P2> aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
-				{
-					continue;
-				}
-				
-				IAwake<P1, P2> iAwake = aAwakeSystem as IAwake<P1, P2>;
-				if (iAwake == null)
 				{
 					continue;
 				}
 
 				try
 				{
-					iAwake.Run(component, p1, p2);
+					aAwakeSystem.Run(component, p1, p2);
 				}
 				catch (Exception e)
 				{
@@ -348,28 +333,22 @@ namespace ET
 
 		public void Awake<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
+			List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3>));
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem<P1, P2, P3> aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
 				{
 					continue;
 				}
 
-				IAwake<P1, P2, P3> iAwake = aAwakeSystem as IAwake<P1, P2, P3>;
-				if (iAwake == null)
-				{
-					continue;
-				}
-
 				try
 				{
-					iAwake.Run(component, p1, p2, p3);
+					aAwakeSystem.Run(component, p1, p2, p3);
 				}
 				catch (Exception e)
 				{
@@ -380,28 +359,22 @@ namespace ET
 
         public void Awake<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
         {
-            List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
-            if (iAwakeSystems == null)
-            {
-                return;
-            }
+	        List<object> iAwakeSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem<P1, P2, P3, P4>));
+	        if (iAwakeSystems == null)
+	        {
+		        return;
+	        }
 
-            foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
+            foreach (IAwakeSystem<P1, P2, P3, P4> aAwakeSystem in iAwakeSystems)
             {
                 if (aAwakeSystem == null)
                 {
                     continue;
                 }
 
-                IAwake<P1, P2, P3, P4> iAwake = aAwakeSystem as IAwake<P1, P2, P3, P4>;
-                if (iAwake == null)
-                {
-                    continue;
-                }
-
                 try
                 {
-                    iAwake.Run(component, p1, p2, p3, p4);
+	                aAwakeSystem.Run(component, p1, p2, p3, p4);
                 }
                 catch (Exception e)
                 {
@@ -410,33 +383,7 @@ namespace ET
             }
         }
 
-        public void Change(Entity component)
-		{
-			List<IChangeSystem> iChangeSystems = this.changeSystems[component.GetType()];
-			if (iChangeSystems == null)
-			{
-				return;
-			}
-
-			foreach (IChangeSystem iChangeSystem in iChangeSystems)
-			{
-				if (iChangeSystem == null)
-				{
-					continue;
-				}
-
-				try
-				{
-					iChangeSystem.Run(component);
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-				}
-			}
-		}
-
-		public void Load()
+        public void Load()
 		{
 			while (this.loaders.Count > 0)
 			{
@@ -451,7 +398,7 @@ namespace ET
 					continue;
 				}
 				
-				List<ILoadSystem> iLoadSystems = this.loadSystems[component.GetType()];
+				List<object> iLoadSystems = this.typeSystems.GetSystems(component.GetType(), typeof (ILoadSystem));
 				if (iLoadSystems == null)
 				{
 					continue;
@@ -475,40 +422,9 @@ namespace ET
 			ObjectHelper.Swap(ref this.loaders, ref this.loaders2);
 		}
 
-		private void Start()
-		{
-			while (this.starts.Count > 0)
-			{
-				long instanceId = this.starts.Dequeue();
-				Entity component;
-				if (!this.allComponents.TryGetValue(instanceId, out component))
-				{
-					continue;
-				}
-
-				List<IStartSystem> iStartSystems = this.startSystems[component.GetType()];
-				if (iStartSystems == null)
-				{
-					continue;
-				}
-				
-				foreach (IStartSystem iStartSystem in iStartSystems)
-				{
-					try
-					{
-						iStartSystem.Run(component);
-					}
-					catch (Exception e)
-					{
-						Log.Error(e);
-					}
-				}
-			}
-		}
-
 		public void Destroy(Entity component)
 		{
-			List<IDestroySystem> iDestroySystems = this.destroySystems[component.GetType()];
+			List<object> iDestroySystems = this.typeSystems.GetSystems(component.GetType(), typeof (IDestroySystem));
 			if (iDestroySystems == null)
 			{
 				return;
@@ -534,8 +450,6 @@ namespace ET
 		
 		public void Update()
 		{
-			this.Start();
-			
 			while (this.updates.Count > 0)
 			{
 				long instanceId = this.updates.Dequeue();
@@ -549,7 +463,7 @@ namespace ET
 					continue;
 				}
 				
-				List<IUpdateSystem> iUpdateSystems = this.updateSystems[component.GetType()];
+				List<object> iUpdateSystems = this.typeSystems.GetSystems(component.GetType(), typeof (IUpdateSystem));
 				if (iUpdateSystems == null)
 				{
 					continue;
@@ -587,13 +501,13 @@ namespace ET
 				{
 					continue;
 				}
-
-				List<ILateUpdateSystem> iLateUpdateSystems = this.lateUpdateSystems[component.GetType()];
+				
+				List<object> iLateUpdateSystems = this.typeSystems.GetSystems(component.GetType(), typeof (ILateUpdateSystem));
 				if (iLateUpdateSystems == null)
 				{
 					continue;
 				}
-
+				
 				this.lateUpdates2.Enqueue(instanceId);
 
 				foreach (ILateUpdateSystem iLateUpdateSystem in iLateUpdateSystems)

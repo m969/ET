@@ -33,7 +33,8 @@ namespace ET
 	{
 		public static void Awake(this AnimatorComponent self)
 		{
-			Animator animator = self.Parent.GetComponent<GameObjectComponent>().GameObject.transform.GetChild(0).GetComponent<Animator>();
+			var gameObj = self.Parent.GetComponent<GameObjectComponent>().GameObject;
+			Animator animator = gameObj.transform.GetComponentInChildren<Animator>();
 
 			if (animator == null)
 			{

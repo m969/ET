@@ -25,5 +25,10 @@
 		{
 			public Unit Unit;
 		}
+
+		public struct OnBeginExecute
+		{
+			public EGamePlay.Combat.Ability.AbilityExecution AbilityExecution;
+		}
 	}
 }

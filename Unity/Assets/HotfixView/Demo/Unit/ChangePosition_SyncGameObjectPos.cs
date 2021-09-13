@@ -6,6 +6,7 @@ namespace ET
     {
         protected override async ETTask Run(EventType.ChangePosition args)
         {
+            //Log.Debug($"ChangePosition_SyncGameObjectPos {args}");
             GameObjectComponent gameObjectComponent = args.Unit.GetComponent<GameObjectComponent>();
             if (gameObjectComponent == null)
             {

@@ -38,8 +38,24 @@ namespace ET
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                SessionHelper.Call<M2C_ShootResponse>(new C2M_ShootRequest()).Coroutine();
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 1000, self.mapMask))
+                {
+                    //self.ClickPoint = hit.point;
+                    //self.frameClickMap.X = self.ClickPoint.x;
+                    //self.frameClickMap.Y = self.ClickPoint.y;
+                    //self.frameClickMap.Z = self.ClickPoint.z;
+                    //self.DomainScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
+                    ShootRequest(hit.point).Coroutine();
+                }
             }
+        }
+
+        public static async ETVoid ShootRequest(Vector3 point)
+        {
+            var response = await SessionHelper.Call<M2C_SpellResponse>(new C2M_SpellRequest() { PointX = point.x, PointY = point.y, PointZ = point.z });
+            // AbilityHelper.CreateAbilityItem(response.AbilityItem);
         }
     }
 }

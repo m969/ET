@@ -9,7 +9,7 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE2_0;NOT_UNITY;SERVER</DefineConstants>
+    <DefineConstants>TRACE2_0;NOT_UNITY;SERVER;EGAMEPLAY_EXCEL</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -30,282 +30,20 @@
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\AbilityItem\AbilityItem.cs">
-      <Link>Demo\EGamePlay\Combat\AbilityItem\AbilityItem.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
+      <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\AbilityTask\AbilityTask.cs">
-      <Link>Demo\EGamePlay\Combat\AbilityTask\AbilityTask.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Module\EGamePlay\**\*.cs">
+      <Link>Module\EGamePlay\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Ability\AbilityEntity.cs">
-      <Link>Demo\EGamePlay\Combat\Ability\AbilityEntity.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\**\*.cs">
+      <Link>Module\FixedPoint\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Ability\AbilityExecution.cs">
-      <Link>Demo\EGamePlay\Combat\Ability\AbilityExecution.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\ActionPointManageComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Action\ActionPointManageComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\AssignEffectAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\AssignEffectAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\AttackAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\AttackAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\CombatAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\CombatAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\CureAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\CureAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\DamageAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\DamageAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\MotionAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\MotionAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\SpellAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\SpellAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\TurnBaseActions\JumpToAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\TurnBaseActions\JumpToAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Action\TurnBaseActions\TurnAction.cs">
-      <Link>Demo\EGamePlay\Combat\Action\TurnBaseActions\TurnAction.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Attribute\AttributeComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Attribute\AttributeComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Attribute\FloatNumeric.cs">
-      <Link>Demo\EGamePlay\Combat\Attribute\FloatNumeric.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Attribute\HealthPoint.cs">
-      <Link>Demo\EGamePlay\Combat\Attribute\HealthPoint.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Attribute\IntNumeric.cs">
-      <Link>Demo\EGamePlay\Combat\Attribute\IntNumeric.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\CombatActionManageComponent.cs">
-      <Link>Demo\EGamePlay\Combat\CombatActionManageComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\CombatContext.cs">
-      <Link>Demo\EGamePlay\Combat\CombatContext.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\CombatEntity\CombatEntity.cs">
-      <Link>Demo\EGamePlay\Combat\CombatEntity\CombatEntity.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Condition\ConditionEntity.cs">
-      <Link>Demo\EGamePlay\Combat\Condition\ConditionEntity.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Condition\ConditionManageComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Condition\ConditionManageComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Condition\WhenInTimeNoDamageCondition.cs">
-      <Link>Demo\EGamePlay\Combat\Condition\WhenInTimeNoDamageCondition.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\AttributeConfigObject.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\AttributeConfigObject.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\AddShieldEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\AddShieldEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\AddStatusEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\AddStatusEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\AttributeNumericModifyEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\AttributeNumericModifyEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\ClearAllStatusEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\ClearAllStatusEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\CureEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\CureEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\CustomEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\CustomEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\DamageEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\DamageEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\Effect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\Effect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\RemoveStatusEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\RemoveStatusEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\Effect\StackTagEffect.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\Effect\StackTagEffect.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\SkillConfigObject.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\SkillConfigObject.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ConfigObject\StatusConfigObject.cs">
-      <Link>Demo\EGamePlay\Combat\ConfigObject\StatusConfigObject.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\ItemData.cs">
-      <Link>Demo\EGamePlay\Combat\ItemData.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Motion\MotionComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Motion\MotionComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Skill\Attack\AttackAbility.cs">
-      <Link>Demo\EGamePlay\Combat\Skill\Attack\AttackAbility.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Skill\Attack\AttackExecution.cs">
-      <Link>Demo\EGamePlay\Combat\Skill\Attack\AttackExecution.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Skill\SkillAbility.cs">
-      <Link>Demo\EGamePlay\Combat\Skill\SkillAbility.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Skill\SkillDefine.cs">
-      <Link>Demo\EGamePlay\Combat\Skill\SkillDefine.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Skill\SkillExecution.cs">
-      <Link>Demo\EGamePlay\Combat\Skill\SkillExecution.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Status\Logic\LogicActionTriggerComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Status\Logic\LogicActionTriggerComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Status\Logic\LogicConditionTriggerComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Status\Logic\LogicConditionTriggerComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Status\Logic\LogicEntity.cs">
-      <Link>Demo\EGamePlay\Combat\Status\Logic\LogicEntity.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Status\Logic\LogicIntervalTriggerComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Status\Logic\LogicIntervalTriggerComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Status\StatusAbility.cs">
-      <Link>Demo\EGamePlay\Combat\Status\StatusAbility.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Status\StatusExecution.cs">
-      <Link>Demo\EGamePlay\Combat\Status\StatusExecution.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Combat\Status\StatusLifeTimeComponent.cs">
-      <Link>Demo\EGamePlay\Combat\Status\StatusLifeTimeComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Component\ConfigManageComponent.cs">
-      <Link>Demo\EGamePlay\Component\ConfigManageComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Entity\Component.cs">
-      <Link>Demo\EGamePlay\Entity\Component.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Entity\Entity.cs">
-      <Link>Demo\EGamePlay\Entity\Entity.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Entity\EntityComponent.cs">
-      <Link>Demo\EGamePlay\Entity\EntityComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Entity\EventComponent.cs">
-      <Link>Demo\EGamePlay\Entity\EventComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Entity\IdFactory.cs">
-      <Link>Demo\EGamePlay\Entity\IdFactory.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Entity\MasterEntity.cs">
-      <Link>Demo\EGamePlay\Entity\MasterEntity.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Entity\UpdateComponent.cs">
-      <Link>Demo\EGamePlay\Entity\UpdateComponent.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Helper\ExpressionHelper.cs">
-      <Link>Demo\EGamePlay\Helper\ExpressionHelper.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Helper\ExpressionParser\ExpressionParser.cs">
-      <Link>Demo\EGamePlay\Helper\ExpressionParser\ExpressionParser.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Helper\GameTimer.cs">
-      <Link>Demo\EGamePlay\Helper\GameTimer.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Helper\GenericTypeHelper.cs">
-      <Link>Demo\EGamePlay\Helper\GenericTypeHelper.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Helper\LogHelper.cs">
-      <Link>Demo\EGamePlay\Helper\LogHelper.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Helper\RandomHelper.cs">
-      <Link>Demo\EGamePlay\Helper\RandomHelper.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Helper\ServerHelper.cs" Link="Demo\ServerHelper.cs" />
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\WorkFlow\WorkEndFlow.cs">
-      <Link>Demo\EGamePlay\WorkFlow\WorkEndFlow.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\WorkFlow\WorkFlow.cs">
-      <Link>Demo\EGamePlay\WorkFlow\WorkFlow.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\WorkFlow\WorkFlowSource.cs">
-      <Link>Demo\EGamePlay\WorkFlow\WorkFlowSource.cs</Link>
-    </Compile>
-
-    <Compile Include="..\..\Unity\Assets\Model\Demo\EGamePlay\WorkFlow\WorkRestartFlow.cs">
-      <Link>Demo\EGamePlay\WorkFlow\WorkRestartFlow.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\**\*.cs">
+      <Link>Module\Physics\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
     <Compile Include="..\..\Unity\Assets\Model\Demo\Move\MoveComponent.cs">
@@ -335,83 +73,8 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\AcosLookupTable.cs">
-      <Link>Module\FixedPoint\AcosLookupTable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\Atan2LookupTable.cs">
-      <Link>Module\FixedPoint\Atan2LookupTable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\IntMath.cs">
-      <Link>Module\FixedPoint\IntMath.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\SinCosLookupTable.cs">
-      <Link>Module\FixedPoint\SinCosLookupTable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VFactor.cs">
-      <Link>Module\FixedPoint\VFactor.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VInt.cs">
-      <Link>Module\FixedPoint\VInt.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VInt2.cs">
-      <Link>Module\FixedPoint\VInt2.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VInt3.cs">
-      <Link>Module\FixedPoint\VInt3.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VLine.cs">
-      <Link>Module\FixedPoint\VLine.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\FixedPoint\VRect.cs">
-      <Link>Module\FixedPoint\VRect.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageDispatcherComponent.cs">
       <Link>Module\Message\MessageDispatcherComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\ActorRoot.cs">
-      <Link>Module\Physics\Actor\ActorRoot.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\ActorRootSlot.cs">
-      <Link>Module\Physics\Actor\ActorRootSlot.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\ActorTypeDef.cs">
-      <Link>Module\Physics\Actor\ActorTypeDef.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\COM_PLAYERCAMP.cs">
-      <Link>Module\Physics\Actor\COM_PLAYERCAMP.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Actor\IUpdateLogic.cs">
-      <Link>Module\Physics\Actor\IUpdateLogic.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\CollisionShapeType.cs">
-      <Link>Module\Physics\CollisionShapeType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\DictionaryView.cs">
-      <Link>Module\Physics\DictionaryView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\IObjPoolCtrl.cs">
-      <Link>Module\Physics\Pool\IObjPoolCtrl.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\IPooledMonoBehaviour.cs">
-      <Link>Module\Physics\Pool\IPooledMonoBehaviour.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\PooledClassObject.cs">
-      <Link>Module\Physics\Pool\PooledClassObject.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\Pool\PoolObjHandle.cs">
-      <Link>Module\Physics\Pool\PoolObjHandle.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionBox.cs">
-      <Link>Module\Physics\VCollisionBox.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionCylinderSector.cs">
-      <Link>Module\Physics\VCollisionCylinderSector.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionShape.cs">
-      <Link>Module\Physics\VCollisionShape.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Physics\VCollisionSphere.cs">
-      <Link>Module\Physics\VCollisionSphere.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -482,7 +145,7 @@
       <Link>Module\Network\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="2.9.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.13.0" />
@@ -491,16 +154,5 @@
     <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />
     <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
     <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Gizmos\Skill icon.png">
-      <Link>Demo\EGamePlay\Gizmos\Skill icon.png</Link>
-    </Content>
-    <Content Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Gizmos\Skill icon_psd.psd">
-      <Link>Demo\EGamePlay\Gizmos\Skill icon_psd.psd</Link>
-    </Content>
-    <Content Include="..\..\Unity\Assets\Model\Demo\EGamePlay\Gizmos\Status icon.png">
-      <Link>Demo\EGamePlay\Gizmos\Status icon.png</Link>
-    </Content>
   </ItemGroup>
 </Project>
