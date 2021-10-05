@@ -58,11 +58,15 @@ namespace ET
 		{
 			get
 			{
-				return instance ??= new EventSystem();
+				if (instance == null)
+				{
+					instance = new EventSystem();
+				}
+				return instance;
 			}
 		}
 		
-		private readonly Dictionary<long, Entity> allComponents = new Dictionary<long, Entity>();
+		private readonly Dictionary<long, Entity> allEntities = new Dictionary<long, Entity>();
 
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 		
@@ -183,7 +187,7 @@ namespace ET
 				this.Remove(component.InstanceId);
 				return;
 			}
-			this.allComponents.Add(component.InstanceId, component);
+			this.allEntities.Add(component.InstanceId, component);
 			
 			Type type = component.GetType();
 
@@ -211,19 +215,19 @@ namespace ET
 
 		public void Remove(long instanceId)
 		{
-			this.allComponents.Remove(instanceId);
+			this.allEntities.Remove(instanceId);
 		}
 
 		public Entity Get(long instanceId)
 		{
 			Entity component = null;
-			this.allComponents.TryGetValue(instanceId, out component);
+			this.allEntities.TryGetValue(instanceId, out component);
 			return component;
 		}
 		
 		public bool IsRegister(long instanceId)
 		{
-			return this.allComponents.ContainsKey(instanceId);
+			return this.allEntities.ContainsKey(instanceId);
 		}
 		
 		public void Deserialize(Entity component)
@@ -388,7 +392,7 @@ namespace ET
 			{
 				long instanceId = this.loaders.Dequeue();
 				Entity component;
-				if (!this.allComponents.TryGetValue(instanceId, out component))
+				if (!this.allEntities.TryGetValue(instanceId, out component))
 				{
 					continue;
 				}
@@ -453,7 +457,7 @@ namespace ET
 			{
 				long instanceId = this.updates.Dequeue();
 				Entity component;
-				if (!this.allComponents.TryGetValue(instanceId, out component))
+				if (!this.allEntities.TryGetValue(instanceId, out component))
 				{
 					continue;
 				}
@@ -492,7 +496,7 @@ namespace ET
 			{
 				long instanceId = this.lateUpdates.Dequeue();
 				Entity component;
-				if (!this.allComponents.TryGetValue(instanceId, out component))
+				if (!this.allEntities.TryGetValue(instanceId, out component))
 				{
 					continue;
 				}
@@ -532,24 +536,27 @@ namespace ET
 			{
 				return;
 			}
-			using var list = ListComponent<ETTask>.Create();
 
-			foreach (object obj in iEvents)
+			using (var list = ListComponent<ETTask>.Create())
 			{
-				if (!(obj is AEvent<T> aEvent))
+				foreach (object obj in iEvents)
 				{
-					Log.Error($"event error: {obj.GetType().Name}");
-					continue;
+					if (!(obj is AEvent<T> aEvent))
+					{
+						Log.Error($"event error: {obj.GetType().Name}");
+						continue;
+					}
+
+					list.List.Add(aEvent.Handle(a));
 				}
-				list.List.Add(aEvent.Handle(a));
-			}
-			try
-			{
-				await ETTaskHelper.WaitAll(list.List);
-			}
-			catch (Exception e)
-			{
-				Log.Error(e);
+				try
+				{
+					await ETTaskHelper.WaitAll(list.List);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
@@ -561,7 +568,7 @@ namespace ET
 			
 			HashSet<Type> noDomain = new HashSet<Type>();
 			
-			foreach (var kv in this.allComponents)
+			foreach (var kv in this.allEntities)
 			{
 				Type type = kv.Value.GetType();
 				if (kv.Value.Parent == null)

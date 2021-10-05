@@ -31,7 +31,7 @@ namespace ET
         public long InstanceId
         {
             get;
-            set;
+            protected set;
         }
 
         protected Entity()
@@ -44,7 +44,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public bool IsFromPool
+        private bool IsFromPool
         {
             get => (this.status & EntityStatus.IsFromPool) == EntityStatus.IsFromPool;
             set
@@ -62,7 +62,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public bool IsRegister
+        protected bool IsRegister
         {
             get => (this.status & EntityStatus.IsRegister) == EntityStatus.IsRegister;
             set
@@ -105,7 +105,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public bool IsCreate
+        protected bool IsCreate
         {
             get => (this.status & EntityStatus.IsCreate) == EntityStatus.IsCreate;
             set
@@ -129,6 +129,7 @@ namespace ET
         [BsonIgnore]
         protected Entity parent;
 
+        // 可以改变parent，但是不能设置为null
         [IgnoreDataMember]
         [BsonIgnore]
         public Entity Parent
@@ -140,32 +141,33 @@ namespace ET
                 {
                     throw new Exception($"cant set parent null: {this.GetType().Name}");
                 }
+                
+                if (value == this)
+                {
+                    throw new Exception($"cant set parent self: {this.GetType().Name}");
+                }
+
+                // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
+                if (value.Domain == null)
+                {
+                    throw new Exception($"cant set parent because parent domain is null: {this.GetType().Name} {value.GetType().Name}");
+                }
 
                 if (this.parent != null) // 之前有parent
                 {
                     // parent相同，不设置
-                    if (this.parent.InstanceId == value.InstanceId)
+                    if (this.parent == value)
                     {
                         Log.Error($"重复设置了Parent: {this.GetType().Name} parent: {this.parent.GetType().Name}");
                         return;
                     }
-
                     this.parent.RemoveChild(this);
-
-                    this.parent = value;
-                    this.parent.AddChild(this);
-
-                    this.Domain = this.parent.domain;
                 }
-                else
-                {
-                    this.parent = value;
-                    this.parent.AddChild(this);
-
-                    this.IsComponent = false;
-
-                    AfterSetParent();
-                }
+                
+                this.parent = value;
+                this.parent.AddChild(this);
+                this.IsComponent = false;
+                this.Domain = this.parent.domain;
             }
         }
 
@@ -182,16 +184,9 @@ namespace ET
                 }
 
                 this.parent = value;
-
                 this.IsComponent = true;
-
-                AfterSetParent();
+                this.Domain = this.parent.domain;
             }
-        }
-
-        private void AfterSetParent()
-        {
-            this.Domain = this.parent.domain;
         }
 
         public T GetParent<T>() where T : Entity
@@ -217,55 +212,50 @@ namespace ET
         [BsonIgnore]
         public Entity Domain
         {
-            get => this.domain;
-            set
+            get
+            {
+                return this.domain;
+            }
+            private set
             {
                 if (value == null)
                 {
+                    throw new Exception($"domain cant set null: {this.GetType().Name}");
+                }
+                
+                if (this.domain == value)
+                {
                     return;
                 }
-
+                
                 Entity preDomain = this.domain;
                 this.domain = value;
-
-                //if (!(this.domain is Scene))
-                //{
-                //	throw new Exception($"domain is not scene: {this.GetType().Name}");
-                //}
-
+                
                 if (preDomain == null)
                 {
                     this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
-
+                    this.IsRegister = true;
+                    
                     // 反序列化出来的需要设置父子关系
-                    if (!this.IsCreate)
+                    if (this.componentsDB != null)
                     {
-                        if (this.componentsDB != null)
+                        foreach (Entity component in this.componentsDB)
                         {
-                            foreach (Entity component in this.componentsDB)
-                            {
-                                component.IsComponent = true;
-                                this.Components.Add(component.GetType(), component);
-                                component.parent = this;
-                            }
-                        }
-
-                        if (this.childrenDB != null)
-                        {
-                            foreach (Entity child in this.childrenDB)
-                            {
-                                child.IsComponent = false;
-                                this.Children.Add(child.Id, child);
-                                child.parent = this;
-                            }
+                            component.IsComponent = true;
+                            this.Components.Add(component.GetType(), component);
+                            component.parent = this;
                         }
                     }
-                }
 
-                // 是否注册跟parent一致
-                if (this.parent != null)
-                {
-                    this.IsRegister = this.Parent.IsRegister;
+                    if (this.childrenDB != null)
+                    {
+                        foreach (Entity child in this.childrenDB)
+                        {
+                            child.IsComponent = false;
+                            this.Children.Add(child.Id, child);
+                            child.parent = this;
+                        }
+                    }
                 }
 
                 // 递归设置孩子的Domain
@@ -285,8 +275,9 @@ namespace ET
                     }
                 }
 
-                if (preDomain == null && !this.IsCreate)
+                if (!this.IsCreate)
                 {
+                    this.IsCreate = true;
                     EventSystem.Instance.Deserialize(this);
                 }
             }
@@ -303,7 +294,17 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public Dictionary<long, Entity> Children => this.children ?? (this.children = childrenPool.Fetch());
+        public Dictionary<long, Entity> Children
+        {
+            get
+            {
+                if (this.children == null)
+                {
+                    this.children = childrenPool.Fetch();
+                }
+                return this.children;
+            }
+        }
 
         private void AddChild(Entity entity)
         {
@@ -336,10 +337,7 @@ namespace ET
                 return;
             }
 
-            if (this.childrenDB == null)
-            {
-                this.childrenDB = hashSetPool.Fetch();
-            }
+            this.childrenDB = this.childrenDB ?? hashSetPool.Fetch();
 
             this.childrenDB.Add(entity);
         }
@@ -379,7 +377,17 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public Dictionary<Type, Entity> Components => this.components ?? (this.components = dictPool.Fetch());
+        public Dictionary<Type, Entity> Components
+        {
+            get
+            {
+                if (this.components == null)
+                {
+                    this.components = dictPool.Fetch();
+                }
+                return this.components;
+            }
+        }
 
         public override void Dispose()
         {
@@ -388,7 +396,7 @@ namespace ET
                 return;
             }
 
-            EventSystem.Instance.Remove(this.InstanceId);
+            this.IsRegister = false;
             this.InstanceId = 0;
 
             // 清理Component
