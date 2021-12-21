@@ -1,15 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <OutputPath>..\..\Bin\</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <OutputPath>..\..\Bin\</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -47,13 +49,14 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.8.0" />
-      <PackageReference Include="EPPlus" Version="5.7.4" />
-      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.11.0" />
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0" />
-      <PackageReference Include="mongocsharpdriver" Version="2.13.0" />
-      <PackageReference Include="MongoDB.Bson" Version="2.13.0" />
-      <PackageReference Include="NLog" Version="4.7.10" />
-      <PackageReference Include="SharpZipLib" Version="1.3.2" />
+      <PackageReference Include="EPPlus" Version="5.8.3" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.1" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+      <PackageReference Include="mongocsharpdriver" Version="2.13.3" />
+      <PackageReference Include="MongoDB.Bson" Version="2.13.3" />
+      <PackageReference Include="NLog" Version="4.7.12" />
+      <PackageReference Include="protobuf-net" Version="2.4.0" />
+      <PackageReference Include="SharpZipLib" Version="1.3.3" />
     </ItemGroup>
 
 </Project>

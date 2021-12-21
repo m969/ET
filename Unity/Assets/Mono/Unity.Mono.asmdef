@@ -1,14 +1,16 @@
 {
     "name": "Unity.Mono",
-    "rootNamespace": "ET",
+    "rootNamespace": "",
     "references": [
-        "GUID:bebd02018e98e44409a761968a7cbcd9"
+        "Unity.ThirdParty"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        ""
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

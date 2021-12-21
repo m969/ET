@@ -3,6 +3,22 @@ using System.IO;
 
 namespace ET
 {
+    [Timer(TimerType.ActorMessageSenderChecker)]
+    public class ActorMessageSenderChecker: ATimer<ActorMessageSenderComponent>
+    {
+        public override void Run(ActorMessageSenderComponent self)
+        {
+            try
+            {
+                self.Check();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
+    
     [ObjectSystem]
     public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
     {
@@ -10,7 +26,7 @@ namespace ET
         {
             ActorMessageSenderComponent.Instance = self;
 
-            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, self.Check);
+            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, TimerType.ActorMessageSenderChecker, self);
         }
     }
 
@@ -30,13 +46,13 @@ namespace ET
     {
         public static void Run(ActorMessageSender self, IActorResponse response)
         {
-            if (response.Error == ErrorCode.ERR_ActorTimeout)
+            if (response.Error == ErrorCore.ERR_ActorTimeout)
             {
                 self.Tcs.SetException(new Exception($"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.MemoryStream.ToActorMessage()}, response: {response}"));
                 return;
             }
 
-            if (self.NeedException && ErrorCode.IsRpcNeedThrowException(response.Error))
+            if (self.NeedException && ErrorCore.IsRpcNeedThrowException(response.Error))
             {
                 self.Tcs.SetException(new Exception($"Rpc error: actorId: {self.ActorId} request: {self.MemoryStream.ToActorMessage()}, response: {response}"));
                 return;
@@ -65,7 +81,7 @@ namespace ET
                 self.requestCallback.Remove(rpcId);
                 try
                 {
-                    IActorResponse response = ActorHelper.CreateResponse((IActorRequest)actorMessageSender.MemoryStream.ToActorMessage(), ErrorCode.ERR_ActorTimeout);
+                    IActorResponse response = ActorHelper.CreateResponse((IActorRequest)actorMessageSender.MemoryStream.ToActorMessage(), ErrorCore.ERR_ActorTimeout);
                     Run(actorMessageSender, response);
                 }
                 catch (Exception e)

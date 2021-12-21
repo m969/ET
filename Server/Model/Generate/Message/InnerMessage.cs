@@ -3,13 +3,10 @@ using ProtoBuf;
 using System.Collections.Generic;
 namespace ET
 {
-/// <summary>
-/// 传送unit
-/// </summary>
-	[ResponseType(typeof(M2M_TrasferUnitResponse))]
-	[Message(InnerOpcode.M2M_TrasferUnitRequest)]
+	[ResponseType(nameof(ObjectQueryResponse))]
+	[Message(InnerOpcode.ObjectQueryRequest)]
 	[ProtoContract]
-	public partial class M2M_TrasferUnitRequest: Object, IActorRequest
+	public partial class ObjectQueryRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -18,7 +15,10 @@ namespace ET
 		public long ActorId { get; set; }
 
 		[ProtoMember(1)]
-		public Unit Unit { get; set; }
+		public long Key { get; set; }
+
+		[ProtoMember(2)]
+		public long InstanceId { get; set; }
 
 	}
 
@@ -40,7 +40,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(A2M_Reload))]
+	[ResponseType(nameof(A2M_Reload))]
 	[Message(InnerOpcode.M2A_Reload)]
 	[ProtoContract]
 	public partial class M2A_Reload: Object, IActorRequest
@@ -68,7 +68,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(G2G_LockResponse))]
+	[ResponseType(nameof(G2G_LockResponse))]
 	[Message(InnerOpcode.G2G_LockRequest)]
 	[ProtoContract]
 	public partial class G2G_LockRequest: Object, IActorRequest
@@ -102,7 +102,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(G2G_LockReleaseResponse))]
+	[ResponseType(nameof(G2G_LockReleaseResponse))]
 	[Message(InnerOpcode.G2G_LockReleaseRequest)]
 	[ProtoContract]
 	public partial class G2G_LockReleaseRequest: Object, IActorRequest
@@ -136,7 +136,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(ObjectAddResponse))]
+	[ResponseType(nameof(ObjectAddResponse))]
 	[Message(InnerOpcode.ObjectAddRequest)]
 	[ProtoContract]
 	public partial class ObjectAddRequest: Object, IActorRequest
@@ -170,7 +170,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(ObjectLockResponse))]
+	[ResponseType(nameof(ObjectLockResponse))]
 	[Message(InnerOpcode.ObjectLockRequest)]
 	[ProtoContract]
 	public partial class ObjectLockRequest: Object, IActorRequest
@@ -207,7 +207,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(ObjectUnLockResponse))]
+	[ResponseType(nameof(ObjectUnLockResponse))]
 	[Message(InnerOpcode.ObjectUnLockRequest)]
 	[ProtoContract]
 	public partial class ObjectUnLockRequest: Object, IActorRequest
@@ -244,7 +244,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(ObjectRemoveResponse))]
+	[ResponseType(nameof(ObjectRemoveResponse))]
 	[Message(InnerOpcode.ObjectRemoveRequest)]
 	[ProtoContract]
 	public partial class ObjectRemoveRequest: Object, IActorRequest
@@ -275,7 +275,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(ObjectGetResponse))]
+	[ResponseType(nameof(ObjectGetResponse))]
 	[Message(InnerOpcode.ObjectGetRequest)]
 	[ProtoContract]
 	public partial class ObjectGetRequest: Object, IActorRequest
@@ -309,7 +309,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(G2R_GetLoginKey))]
+	[ResponseType(nameof(G2R_GetLoginKey))]
 	[Message(InnerOpcode.R2G_GetLoginKey)]
 	[ProtoContract]
 	public partial class R2G_GetLoginKey: Object, IActorRequest
@@ -346,7 +346,7 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(M2G_CreateUnit))]
+	[ResponseType(nameof(M2G_CreateUnit))]
 	[Message(InnerOpcode.G2M_CreateUnit)]
 	[ProtoContract]
 	public partial class G2M_CreateUnit: Object, IActorRequest
@@ -379,11 +379,9 @@ namespace ET
 		public string Message { get; set; }
 
 // 自己的unit id
-// 自己的unit id
 		[ProtoMember(1)]
 		public long UnitId { get; set; }
 
-// 所有的unit
 // 所有的unit
 		[ProtoMember(2)]
 		public List<UnitInfo> Units = new List<UnitInfo>();

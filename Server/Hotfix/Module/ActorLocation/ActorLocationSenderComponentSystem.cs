@@ -1,8 +1,24 @@
-﻿﻿using System;
+﻿using System;
 using System.IO;
 
 namespace ET
 {
+    [Timer(TimerType.ActorLocationSenderChecker)]
+    public class ActorLocationSenderChecker: ATimer<ActorLocationSenderComponent>
+    {
+        public override void Run(ActorLocationSenderComponent self)
+        {
+            try
+            {
+                self.Check();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
+    
     [ObjectSystem]
     public class ActorLocationSenderComponentAwakeSystem: AwakeSystem<ActorLocationSenderComponent>
     {
@@ -12,7 +28,7 @@ namespace ET
 
             // 每10s扫描一次过期的actorproxy进行回收,过期时间是2分钟
             // 可能由于bug或者进程挂掉，导致ActorLocationSender发送的消息没有确认，结果无法自动删除，每一分钟清理一次这种ActorLocationSender
-            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, self.Check);
+            self.CheckTimer = TimerComponent.Instance.NewRepeatedTimer(10 * 1000, TimerType.ActorLocationSenderChecker, self);
         }
     }
 
@@ -39,11 +55,11 @@ namespace ET
 
                     if (timeNow > actorLocationMessageSender.LastSendOrRecvTime + ActorLocationSenderComponent.TIMEOUT_TIME)
                     {
-                        list.List.Add(key);
+                        list.Add(key);
                     }
                 }
 
-                foreach (long id in list.List)
+                foreach (long id in list)
                 {
                     self.Remove(id);
                 }
@@ -62,7 +78,7 @@ namespace ET
                 return (ActorLocationSender) actorLocationSender;
             }
 
-            actorLocationSender = Entity.CreateWithId<ActorLocationSender>(self, id);
+            actorLocationSender = self.AddChildWithId<ActorLocationSender>(id);
             return (ActorLocationSender) actorLocationSender;
         }
 
@@ -95,11 +111,11 @@ namespace ET
             {
                 if (actorLocationSender.InstanceId != actorLocationSenderInstanceId)
                 {
-                    throw new RpcException(ErrorCode.ERR_ActorTimeout, $"{stream.ToActorMessage()}");
+                    throw new RpcException(ErrorCore.ERR_ActorTimeout, $"{stream.ToActorMessage()}");
                 }
 
                 // 队列中没处理的消息返回跟上个消息一样的报错
-                if (actorLocationSender.Error == ErrorCode.ERR_NotFoundActor)
+                if (actorLocationSender.Error == ErrorCore.ERR_NotFoundActor)
                 {
                     return ActorHelper.CreateResponse(iActorRequest, actorLocationSender.Error);
                 }
@@ -134,32 +150,32 @@ namespace ET
                     actorLocationSender.ActorId = await LocationProxyComponent.Instance.Get(actorLocationSender.Id);
                     if (actorLocationSender.InstanceId != instanceId)
                     {
-                        throw new RpcException(ErrorCode.ERR_ActorLocationSenderTimeout2, $"{memoryStream.ToActorMessage()}");
+                        throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout2, $"{memoryStream.ToActorMessage()}");
                     }
                 }
 
                 if (actorLocationSender.ActorId == 0)
                 {
                     IActorRequest iActorRequest = (IActorRequest)memoryStream.ToActorMessage();
-                    return ActorHelper.CreateResponse(iActorRequest, ErrorCode.ERR_NotFoundActor);
+                    return ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 }
 
                 IActorResponse response = await ActorMessageSenderComponent.Instance.Call(actorLocationSender.ActorId, rpcId, memoryStream, false);
                 if (actorLocationSender.InstanceId != instanceId)
                 {
-                    throw new RpcException(ErrorCode.ERR_ActorLocationSenderTimeout3, $"{memoryStream.ToActorMessage()}");
+                    throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout3, $"{memoryStream.ToActorMessage()}");
                 }
 
                 switch (response.Error)
                 {
-                    case ErrorCode.ERR_NotFoundActor:
+                    case ErrorCore.ERR_NotFoundActor:
                     {
                         // 如果没找到Actor,重试
                         ++failTimes;
                         if (failTimes > 20)
                         {
                             Log.Debug($"actor send message fail, actorid: {actorLocationSender.Id}");
-                            actorLocationSender.Error = ErrorCode.ERR_NotFoundActor;
+                            actorLocationSender.Error = ErrorCore.ERR_NotFoundActor;
                             // 这里不能删除actor，要让后面等待发送的消息也返回ERR_NotFoundActor，直到超时删除
                             return response;
                         }
@@ -168,20 +184,19 @@ namespace ET
                         await TimerComponent.Instance.WaitAsync(500);
                         if (actorLocationSender.InstanceId != instanceId)
                         {
-                            throw new RpcException(ErrorCode.ERR_ActorLocationSenderTimeout4, $"{memoryStream.ToActorMessage()}");
+                            throw new RpcException(ErrorCore.ERR_ActorLocationSenderTimeout4, $"{memoryStream.ToActorMessage()}");
                         }
 
                         actorLocationSender.ActorId = 0;
                         continue;
                     }
-                    case ErrorCode.ERR_ActorNoMailBoxComponent:
-                    case ErrorCode.ERR_ActorTimeout:
+                    case ErrorCore.ERR_ActorTimeout:
                     {
                         throw new RpcException(response.Error, $"{memoryStream.ToActorMessage()}");
                     }
                 }
 
-                if (ErrorCode.IsRpcNeedThrowException(response.Error))
+                if (ErrorCore.IsRpcNeedThrowException(response.Error))
                 {
                     throw new RpcException(response.Error, $"Message: {response.Message} Request: {memoryStream.ToActorMessage()}");
                 }

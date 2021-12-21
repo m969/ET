@@ -1,6 +1,7 @@
 ﻿using System.IO;
 
 using UnityEditor;
+using UnityEngine;
 
 namespace ET
 {
@@ -10,17 +11,11 @@ namespace ET
 
         public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 
-
-        [MenuItem("Tools/web资源服务器")]
-        public static void OpenFileServer()
-        {
-            ProcessHelper.Run("dotnet", "FileServer.dll", "../FileServer/");
-        }
-
         public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB, bool clearFolder)
         {
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
-            string exeName = "ET";
+            string programName = "ET";
+            string exeName = programName;
             switch (type)
             {
                 case PlatformType.PC:
@@ -51,10 +46,10 @@ namespace ET
                 Directory.CreateDirectory(fold);
             }
 
-            Log.Debug("开始资源打包");
+            UnityEngine.Debug.Log("开始资源打包");
             BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
 
-            Log.Debug("完成资源打包");
+            UnityEngine.Debug.Log("完成资源打包");
 
             if (isContainAB)
             {
@@ -68,9 +63,19 @@ namespace ET
                 string[] levels = {
                     "Assets/Scenes/Init.unity",
                 };
-                Log.Debug("开始EXE打包");
+                UnityEngine.Debug.Log("开始EXE打包");
                 BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
-                Log.Debug("完成exe打包");
+                UnityEngine.Debug.Log("完成exe打包");
+            }
+            else
+            {
+                if (isContainAB && type == PlatformType.PC)
+                {
+                    string targetPath = Path.Combine(relativeDirPrefix, $"{programName}_Data/StreamingAssets/");
+                    FileHelper.CleanDirectory(targetPath);
+                    Debug.Log($"src dir: {fold}    target: {targetPath}");
+                    FileHelper.CopyDirectory(fold, targetPath);
+                }
             }
         }
     }

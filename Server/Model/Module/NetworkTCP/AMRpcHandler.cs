@@ -12,14 +12,14 @@ namespace ET
             HandleAsync(session, message).Coroutine();
         }
 
-        private async ETVoid HandleAsync(Session session, object message)
+        private async ETTask HandleAsync(Session session, object message)
         {
             try
             {
                 Request request = message as Request;
                 if (request == null)
                 {
-                    Log.Error($"消息类型转换错误: {message.GetType().Name} to {typeof (Request).Name}");
+                    throw new Exception($"消息类型转换错误: {message.GetType().Name} to {typeof (Request).Name}");
                 }
 
                 int rpcId = request.RpcId;
@@ -47,7 +47,7 @@ namespace ET
                 catch (Exception exception)
                 {
                     Log.Error(exception);
-                    response.Error = ErrorCode.ERR_RpcFail;
+                    response.Error = ErrorCore.ERR_RpcFail;
                     response.Message = exception.ToString();
                     Reply();
                 }

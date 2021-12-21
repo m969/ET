@@ -13,7 +13,7 @@ namespace ET
 			self.database = self.mongoClient.GetDatabase(dbName);
 			
 			self.Transfers.Clear();
-			foreach (Type type in Game.EventSystem.GetTypes())
+			foreach (Type type in Game.EventSystem.GetTypes().Values)
 			{
 				if (type == typeof (IDBCollection))
 				{
@@ -204,7 +204,7 @@ namespace ET
 		    }
 	    }
 
-	    public static async ETVoid SaveNotWait<T>(this DBComponent self, T entity, long taskId = 0, string collection = null) where T : Entity
+	    public static async ETTask SaveNotWait<T>(this DBComponent self, T entity, long taskId = 0, string collection = null) where T : Entity
 	    {
 		    if (taskId == 0)
 		    {
